@@ -40,8 +40,8 @@ async function main() {
     };
     const response = await fetchWithRetry(url, options);
     fs.writeFileSync(
-      `${writeDir}/_ipfsMetasResponse.json`,
-      JSON.stringify(response, null, 2)
+        `${writeDir}/_ipfsMetasResponse.json`,
+        JSON.stringify(response, null, 2)
     );
     console.log(`Metadata uploaded!`);
   } catch (err) {
@@ -68,7 +68,6 @@ async function main() {
       "external_url": metaData?.external_url,
       "custom_fields": {
         "date": metaData.date,
-        "compiler": "HashLips Art Engine - codeSTACKr Modified"
       }
     }
 

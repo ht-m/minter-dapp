@@ -81,21 +81,21 @@ const updateConnectStatus = async () => {
     notConnected.classList.add('show-not-connected');
     onboardButton.onclick = async () => {
       await window.ethereum
-        .request({
-          method: "eth_requestAccounts",
-        })
-        .then(function (accts) {
-          onboardButton.innerText = `✔ ...${accts[0].slice(-4)}`;
-          notConnected.classList.remove('show-not-connected');
-          notConnected.classList.add('hidden');
-          // SHOW SPINNER
-          spinner.classList.remove('hidden');
-          onboardButton.disabled = true;
-          window.address = accts[0];
-          accounts = accts;
-          window.contract = new web3.eth.Contract(abi, contractAddress);
-          loadInfo();
-        });
+          .request({
+            method: "eth_requestAccounts",
+          })
+          .then(function (accts) {
+            onboardButton.innerText = `✔ ...${accts[0].slice(-4)}`;
+            notConnected.classList.remove('show-not-connected');
+            notConnected.classList.add('hidden');
+            // SHOW SPINNER
+            spinner.classList.remove('hidden');
+            onboardButton.disabled = true;
+            window.address = accts[0];
+            accounts = accts;
+            window.contract = new web3.eth.Contract(abi, contractAddress);
+            loadInfo();
+          });
     };
   }
 };
@@ -115,7 +115,7 @@ async function checkChain() {
       });
       updateConnectStatus();
     } catch (err) {
-        // This error code indicates that the chain has not been added to MetaMask.
+      // This error code indicates that the chain has not been added to MetaMask.
       if (err.code === 4902) {
         try {
           if(chain === 'rinkeby') {
@@ -176,11 +176,11 @@ async function loadInfo() {
     startTime = window.info.runtimeConfig.publicMintStart;
     mainHeading.innerText = h1_presale_mint;
     subHeading.innerText = h2_presale_mint;
-    
+
     try {
       // CHECK IF WHITELISTED
       const merkleData = await fetch(
-        `/.netlify/functions/merkleProof/?wallet=${window.address}&chain=${chain}&contract=${contractAddress}`
+          `/.netlify/functions/merkleProof/?wallet=${window.address}&chain=${chain}&contract=${contractAddress}`
       );
       const merkleJson = await merkleData.json();
       const whitelisted = await contract.methods.isWhitelisted(window.address, merkleJson).call();
@@ -194,7 +194,7 @@ async function loadInfo() {
         mintContainer.classList.remove('hidden');
       }
     } catch(e) {
-      // console.log(e);
+      console.log(e);
       mainText.innerText = p_presale_mint_already_minted;
       actionButton.innerText = button_presale_already_minted;
     }
@@ -231,7 +231,7 @@ async function loadInfo() {
   const maxPerMint = document.getElementById("maxPerMint");
   const totalSupply = document.getElementById("totalSupply");
   const mintInput = document.getElementById("mintInput");
-  
+
   pricePerMint.innerText = `${price} ${priceType}`;
   maxPerMint.innerText = `${info.deploymentConfig.tokensPerMint}`;
   totalSupply.innerText = `${info.deploymentConfig.maxSupply}`;
@@ -284,7 +284,7 @@ function setTotalPrice() {
     return;
   }
   const totalPriceWei = BigInt(info.deploymentConfig.mintPrice) * BigInt(mintInputValue);
-  
+
   let priceType = '';
   if(chain === 'rinkeby') {
     priceType = 'ETH';
@@ -312,8 +312,8 @@ async function mint() {
     // PUBLIC MINT
     try {
       const mintTransaction = await contract.methods
-        .mint(amount)
-        .send({ from: window.address, value: value.toString() });
+          .mint(amount)
+          .send({ from: window.address, value: value.toString() });
       if(mintTransaction) {
         if(chain === 'rinkeby') {
           const url = `https://rinkeby.etherscan.io/tx/${mintTransaction.transactionHash}`;
@@ -345,12 +345,12 @@ async function mint() {
     // PRE-SALE MINTING
     try {
       const merkleData = await fetch(
-        `/.netlify/functions/merkleProof/?wallet=${window.address}&chain=${chain}&contract=${contractAddress}`
+          `/.netlify/functions/merkleProof/?wallet=${window.address}&chain=${chain}&contract=${contractAddress}`
       );
       const merkleJson = await merkleData.json();
       const presaleMintTransaction = await contract.methods
-        .presaleMint(amount, merkleJson)
-        .send({ from: window.address, value: value.toString() });
+          .presaleMint(amount, merkleJson)
+          .send({ from: window.address, value: value.toString() });
       if(presaleMintTransaction) {
         if(chain === 'rinkeby') {
           const url = `https://rinkeby.etherscan.io/tx/${presaleMintTransaction.transactionHash}`;

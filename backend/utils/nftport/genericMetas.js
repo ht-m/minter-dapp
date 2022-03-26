@@ -21,13 +21,11 @@ const genericObject = {
   "description": GENERIC_DESCRIPTION,
   "image": GENERIC_IMAGE,
   "external_url": extraMetadata.external_url || null,
-  "date": 1647039293429,
-  "compiler": "HashLips Art Engine - codeSTACKr Modified"
 }
 
 fs.writeFileSync(
-  `${buildDir}/genericJson/_metadata.json`,
-  JSON.stringify(genericObject, null, 2)
+    `${buildDir}/genericJson/_metadata.json`,
+    JSON.stringify(genericObject, null, 2)
 );
 
 console.log("Generic metadata created!");
